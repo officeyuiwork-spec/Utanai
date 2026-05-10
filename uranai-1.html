@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ hoshi uranai ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Kaisei+Opti:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FFB8D1;
+    --lavender: #C9B8FF;
+    --mint: #B8F0E0;
+    --peach: #FFD8B8;
+    --sky: #B8E4FF;
+    --yellow: #FFF3B8;
+    --white: #FFFAF8;
+    --text: #5a4a5a;
+    --text-light: #9a8a9a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ctext y='20' font-size='20'%3E✨%3C/text%3E%3C/svg%3E"), auto;
+  }
+
+  /* floating blobs bg */
+  .bg {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+  }
+  .blob {
+    position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.35;
+    animation: float 8s ease-in-out infinite;
+  }
+  .blob1 { width: 400px; height: 400px; background: var(--pink); top: -100px; left: -100px; animation-delay: 0s; }
+  .blob2 { width: 350px; height: 350px; background: var(--lavender); top: 30%; right: -80px; animation-delay: 2s; }
+  .blob3 { width: 300px; height: 300px; background: var(--mint); bottom: 10%; left: 20%; animation-delay: 4s; }
+  .blob4 { width: 250px; height: 250px; background: var(--peach); bottom: -80px; right: 20%; animation-delay: 1s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  /* header */
+  header {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 60px 20px 30px;
+  }
+  .site-title {
+    font-family: 'Kaisei Opti', serif;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    letter-spacing: 0.15em;
+    background: linear-gradient(135deg, #c084bc, #818cf8, #60b8d8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+  }
+  .site-sub {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    letter-spacing: 0.2em;
+  }
+  .stars-deco {
+    font-size: 1.4rem;
+    animation: spin 10s linear infinite;
+    display: inline-block;
+    margin: 0 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* nav tabs */
+  nav {
+    position: relative; z-index: 10;
+    display: flex; justify-content: center; gap: 12px;
+    flex-wrap: wrap; padding: 0 20px 40px;
+  }
+  .tab-btn {
+    padding: 10px 22px;
+    border: none; border-radius: 50px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+  .tab-btn.seiza  { background: var(--pink); color: #8b4565; }
+  .tab-btn.tarot  { background: var(--lavender); color: #4a3b8b; }
+  .tab-btn.suuhi  { background: var(--mint); color: #2b6b55; }
+  .tab-btn:hover, .tab-btn.active {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+
+  /* sections */
+  main { position: relative; z-index: 10; }
+  .section { display: none; padding: 0 20px 60px; }
+  .section.active { display: block; }
+
+  /* 星座選択 */
+  .section-title {
+    text-align: center;
+    font-family: 'Kaisei Opti', serif;
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    color: var(--text);
+  }
+
+  .zodiac-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 14px;
+    max-width: 700px;
+    margin: 0 auto 40px;
+  }
+  .zodiac-card {
+    background: white;
+    border-radius: 20px;
+    padding: 18px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    border: 2px solid transparent;
+  }
+  .zodiac-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--pink);
+    box-shadow: 0 10px 30px rgba(255,184,209,0.4);
+  }
+  .zodiac-card .emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+  .zodiac-card .name { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+  .zodiac-card .dates { font-size: 0.7rem; color: var(--text-light); margin-top: 2px; }
+
+  /* result card */
+  .result-card {
+    max-width: 500px; margin: 0 auto;
+    background: white;
+    border-radius: 30px;
+    padding: 36px 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    display: none;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0.8) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .result-card.show { display: block; }
+  .result-zodiac { font-size: 3rem; text-align: center; margin-bottom: 10px; }
+  .result-title {
+    font-family: 'Kaisei Opti', serif;
+    font-size: 1.4rem;
+    text-align: center;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .luck-bar-wrap { margin: 16px 0; }
+  .luck-label { font-size: 0.8rem; color: var(--text-light); margin-bottom: 4px; }
+  .luck-bar {
+    height: 10px; border-radius: 10px;
+    background: #f0eef5;
+    overflow: hidden;
+  }
+  .luck-bar-fill {
+    height: 100%; border-radius: 10px;
+    animation: fillBar 1s ease-out forwards;
+  }
+  @keyframes fillBar { from { width: 0; } }
+  .fill-love { background: linear-gradient(90deg, var(--pink), #ff7eb3); }
+  .fill-money { background: linear-gradient(90deg, var(--yellow), #f9c74f); }
+  .fill-work { background: linear-gradient(90deg, var(--sky), #4cc9f0); }
+  .fill-health { background: linear-gradient(90deg, var(--mint), #43aa8b); }
+
+  .result-message {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #fff0f7, #f0f0ff);
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .lucky-item {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 6px 16px;
+    background: var(--lavender);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    color: #4a3b8b;
+    font-weight: 700;
+  }
+
+  /* タロット */
+  .tarot-area { max-width: 500px; margin: 0 auto; text-align: center; }
+  .tarot-question-label { font-size: 0.9rem; color: var(--text-light); margin-bottom: 12px; }
+  .tarot-input {
+    width: 100%; padding: 14px 20px;
+    border: 2px solid #e8e0f0;
+    border-radius: 20px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.3s;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .tarot-input:focus { border-color: var(--lavender); }
+  .tarot-deck {
+    display: flex; justify-content: center; gap: 14px; margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .tarot-card {
+    width: 90px; height: 140px;
+    background: linear-gradient(135deg, #c084bc, #818cf8);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    position: relative; overflow: hidden;
+  }
+  .tarot-card::before {
+    content: '✦';
+    position: absolute; font-size: 4rem; opacity: 0.15; color: white;
+  }
+  .tarot-card:hover { transform: translateY(-8px) rotate(-2deg); box-shadow: 0 14px 30px rgba(0,0,0,0.18); }
+  .tarot-card.flipped { cursor: default; }
+  .tarot-card.flipped:hover { transform: none; }
+  .tarot-hint { font-size: 0.8rem; color: var(--text-light); margin-top: 10px; }
+
+  .tarot-result {
+    display: none;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .tarot-result.show { display: block; }
+  .tarot-cards-row {
+    display: flex; justify-content: center; gap: 16px;
+    margin: 20px 0; flex-wrap: wrap;
+  }
+  .tarot-revealed {
+    width: 90px;
+    background: white;
+    border-radius: 14px;
+    padding: 12px 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    font-size: 0.7rem; color: var(--text-light);
+  }
+  .tarot-revealed .card-emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+  .tarot-revealed .card-name { font-weight: 700; color: var(--text); font-size: 0.75rem; }
+  .tarot-revealed .card-pos { font-size: 0.65rem; color: #c084bc; margin-bottom: 4px; }
+
+  /* 数秘術 */
+  .suuhi-area { max-width: 440px; margin: 0 auto; }
+  .input-group { margin-bottom: 18px; }
+  .input-label { display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 6px; }
+  .suuhi-input {
+    width: 100%; padding: 14px 20px;
+    border: 2px solid #e8e0f0;
+    border-radius: 20px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border 0.3s;
+    color: var(--text);
+  }
+  .suuhi-input:focus { border-color: var(--mint); }
+
+  .btn-main {
+    width: 100%; padding: 16px;
+    border: none; border-radius: 20px;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.1em;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
+  .btn-seiza { background: linear-gradient(135deg, var(--pink), #ff9fc7); color: white; }
+  .btn-tarot { background: linear-gradient(135deg, var(--lavender), #a78bfa); color: white; }
+  .btn-suuhi { background: linear-gradient(135deg, var(--mint), #34d399); color: white; }
+  .btn-main:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.18); }
+
+  .suuhi-result {
+    display: none;
+    text-align: center;
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: white;
+    border-radius: 30px;
+    padding: 36px 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    margin-top: 30px;
+  }
+  .suuhi-result.show { display: block; }
+  .life-number {
+    font-family: 'Kaisei Opti', serif;
+    font-size: 6rem;
+    background: linear-gradient(135deg, #60b8d8, #43aa8b);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin: 10px 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+
+  /* footer */
+  footer {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 30px;
+    font-size: 0.75rem;
+    color: var(--text-light);
+  }
+
+  /* reset btn */
+  .reset-btn {
+    display: block; margin: 20px auto 0;
+    padding: 10px 26px;
+    border: 2px solid #e8e0f0;
+    border-radius: 50px;
+    background: white;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .reset-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+  /* sparkle animation on result */
+  .sparkles {
+    text-align: center; font-size: 1.5rem; letter-spacing: 0.3em;
+    animation: sparkle 1.5s ease-in-out infinite;
+  }
+  @keyframes sparkle {
+    0%,100% { opacity:1; transform: scale(1); }
+    50% { opacity:0.6; transform: scale(1.2); }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+  <div class="blob blob4"></div>
+</div>
+
+<header>
+  <div>
+    <span class="stars-deco">🌙</span>
+    <span class="site-title">ほしのうらない</span>
+    <span class="stars-deco">⭐</span>
+  </div>
+  <p class="site-sub">あなたの運命を、やさしく照らします</p>
+</header>
+
+<nav>
+  <button class="tab-btn seiza active" onclick="showSection('seiza')">🔯 星座占い</button>
+  <button class="tab-btn tarot" onclick="showSection('tarot')">🃏 タロット</button>
+  <button class="tab-btn suuhi" onclick="showSection('suuhi')">🔢 数秘術</button>
+</nav>
+
+<main>
+  <!-- 星座占い -->
+  <section id="seiza" class="section active">
+    <h2 class="section-title">🌟 あなたの星座は？</h2>
+    <div class="zodiac-grid" id="zodiacGrid"></div>
+    <div class="result-card" id="seizaResult">
+      <div class="sparkles">✨ ✨ ✨</div>
+      <div class="result-zodiac" id="rZodiacEmoji"></div>
+      <div class="result-title" id="rZodiacName"></div>
+      <div class="luck-bar-wrap">
+        <div class="luck-label">💕 恋愛運</div>
+        <div class="luck-bar"><div class="luck-bar-fill fill-love" id="lLove"></div></div>
+      </div>
+      <div class="luck-bar-wrap">
+        <div class="luck-label">💰 金運</div>
+        <div class="luck-bar"><div class="luck-bar-fill fill-money" id="lMoney"></div></div>
+      </div>
+      <div class="luck-bar-wrap">
+        <div class="luck-label">💼 仕事運</div>
+        <div class="luck-bar"><div class="luck-bar-fill fill-work" id="lWork"></div></div>
+      </div>
+      <div class="luck-bar-wrap">
+        <div class="luck-label">🌿 健康運</div>
+        <div class="luck-bar"><div class="luck-bar-fill fill-health" id="lHealth"></div></div>
+      </div>
+      <div class="result-message" id="rMessage"></div>
+      <div style="text-align:center">
+        <span class="lucky-item" id="rLucky"></span>
+      </div>
+      <button class="reset-btn" onclick="resetSeiza()">← もう一度選ぶ</button>
+    </div>
+  </section>
+
+  <!-- タロット -->
+  <section id="tarot" class="section">
+    <div class="tarot-area">
+      <h2 class="section-title">🃏 タロット占い</h2>
+      <div id="tarotInput">
+        <p class="tarot-question-label">心に浮かぶ質問を書いてね</p>
+        <input class="tarot-input" id="tarotQ" type="text" placeholder="例：仕事はうまくいく？恋愛はどうなる？" maxlength="50">
+        <div class="tarot-deck">
+          <div class="tarot-card" id="tc1" onclick="drawTarot()">🌙</div>
+          <div class="tarot-card" id="tc2" onclick="drawTarot()">🌙</div>
+          <div class="tarot-card" id="tc3" onclick="drawTarot()">🌙</div>
+        </div>
+        <p class="tarot-hint">カードをタップして引いてね ✨</p>
+      </div>
+      <div class="tarot-result" id="tarotResult">
+        <div class="sparkles">🌟 🌟 🌟</div>
+        <p style="margin:16px 0 6px;font-size:0.85rem;color:var(--text-light)">「<span id="tarotQShow"></span>」</p>
+        <div class="tarot-cards-row" id="tarotCardsRow"></div>
+        <div class="result-message" id="tarotMessage"></div>
+        <button class="reset-btn" onclick="resetTarot()">← もう一度引く</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 数秘術 -->
+  <section id="suuhi" class="section">
+    <div class="suuhi-area">
+      <h2 class="section-title">🔢 数秘術</h2>
+      <div class="input-group">
+        <label class="input-label">生年月日を入力してね</label>
+        <input class="suuhi-input" type="date" id="birthdate">
+      </div>
+      <button class="btn-main btn-suuhi" onclick="calcNumerology()">✨ 数秘を見る</button>
+      <div class="suuhi-result" id="suuhiResult">
+        <div class="sparkles">💚 💚 💚</div>
+        <p style="font-size:0.85rem;color:var(--text-light);margin-top:16px">あなたのライフパスナンバーは</p>
+        <div class="life-number" id="lifeNum"></div>
+        <div class="result-message" id="suuhiMessage"></div>
+        <div style="text-align:center;margin-top:16px">
+          <span class="lucky-item" id="suuhiLucky"></span>
+        </div>
+        <button class="reset-btn" onclick="resetSuuhi()">← もう一度計算する</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>✦ ほしのうらない ✦ 占い結果はエンタメとしてお楽しみください 🌙</footer>
+
+<script>
+// ===== 星座データ =====
+const zodiacs = [
+  { emoji:'♈', name:'おひつじ座', dates:'3/21〜4/19', sign:'aries' },
+  { emoji:'♉', name:'おうし座', dates:'4/20〜5/20', sign:'taurus' },
+  { emoji:'♊', name:'ふたご座', dates:'5/21〜6/21', sign:'gemini' },
+  { emoji:'♋', name:'かに座', dates:'6/22〜7/22', sign:'cancer' },
+  { emoji:'♌', name:'しし座', dates:'7/23〜8/22', sign:'leo' },
+  { emoji:'♍', name:'おとめ座', dates:'8/23〜9/22', sign:'virgo' },
+  { emoji:'♎', name:'てんびん座', dates:'9/23〜10/23', sign:'libra' },
+  { emoji:'♏', name:'さそり座', dates:'10/24〜11/22', sign:'scorpio' },
+  { emoji:'♐', name:'いて座', dates:'11/23〜12/21', sign:'sagittarius' },
+  { emoji:'♑', name:'やぎ座', dates:'12/22〜1/19', sign:'capricorn' },
+  { emoji:'♒', name:'みずがめ座', dates:'1/20〜2/18', sign:'aquarius' },
+  { emoji:'♓', name:'うお座', dates:'2/19〜3/20', sign:'pisces' },
+];
+
+const fortuneData = {
+  aries: { love:85, money:70, work:90, health:75, msg:'今日のあなたはエネルギーに満ちています。積極的な行動が新しい扉を開きます。気になる人には思い切ってアプローチを。直感を信じて！', lucky:'🍎 赤いもの' },
+  taurus: { love:75, money:92, work:68, health:85, msg:'金運が絶好調！小さな節約が大きな実りになる日。美しいものに囲まれると運気がアップします。ゆっくり丁寧に過ごして。', lucky:'🌿 グリーン系' },
+  gemini: { love:90, money:65, work:80, health:70, msg:'コミュニケーション運◎ 素敵な出会いや再会があるかも。好奇心のままに動いてみて。二兎を追っても大丈夫な日です✨', lucky:'💛 黄色いもの' },
+  cancer: { love:80, money:72, work:65, health:90, msg:'感受性が豊かになっている日。家族や大切な人との時間を優先して。温かいものを食べると心がほぐれます。', lucky:'🌊 水色' },
+  leo: { love:88, money:78, work:95, health:72, msg:'主役オーラ全開！仕事での活躍が周囲に認められます。自信を持って堂々と。恋愛でもリードする立場で吉。', lucky:'🌻 ひまわり' },
+  virgo: { love:72, money:85, work:90, health:88, msg:'細部への気配りが実を結びます。丁寧な仕事ぶりが評価され、信頼が積み重なる日。健康管理も万全です。', lucky:'🍀 クローバー' },
+  libra: { love:95, money:75, work:78, health:80, msg:'恋愛運が今週最高潮！バランス感覚を活かして人間関係を円滑に。おしゃれをして出かけると良いことが起きます。', lucky:'🌸 ピンク' },
+  scorpio: { love:82, money:88, work:85, health:68, msg:'深い洞察力で物事の本質を見抜ける日。財運も上昇中。気になる投資や貯蓄を始めるには良いタイミング。', lucky:'🔮 紫' },
+  sagittarius: { love:78, money:82, work:72, health:92, msg:'冒険心が運を引き寄せます！新しい場所や体験があなたをレベルアップさせる予感。健康状態も絶好調です。', lucky:'🏹 矢印モチーフ' },
+  capricorn: { love:68, money:90, work:95, health:75, msg:'努力が実る日！長期的な目標に向けてコツコツ積み上げてきたことが報われます。金運も安定。', lucky:'🪨 天然石' },
+  aquarius: { love:85, money:70, work:82, health:78, msg:'独自のアイデアが光る日。個性を活かすことで道が開けます。SNSや発信活動に取り組むと吉✨', lucky:'⚡ 電気系' },
+  pisces: { love:92, money:68, work:75, health:85, msg:'直感と感性が冴えわたっています。夢見がちに見えても、その直感は正しいはず。好きな人への気持ちを伝えてみて。', lucky:'🐠 魚モチーフ' },
+};
+
+// 星座グリッド生成
+const grid = document.getElementById('zodiacGrid');
+zodiacs.forEach(z => {
+  const card = document.createElement('div');
+  card.className = 'zodiac-card';
+  card.innerHTML = `<span class="emoji">${z.emoji}</span><span class="name">${z.name}</span><span class="dates">${z.dates}</span>`;
+  card.onclick = () => showSeizaResult(z);
+  grid.appendChild(card);
+});
+
+function showSeizaResult(z) {
+  const d = fortuneData[z.sign];
+  document.getElementById('rZodiacEmoji').textContent = z.emoji;
+  document.getElementById('rZodiacName').textContent = z.name + 'の今日の運勢';
+  document.getElementById('lLove').style.width = d.love + '%';
+  document.getElementById('lMoney').style.width = d.money + '%';
+  document.getElementById('lWork').style.width = d.work + '%';
+  document.getElementById('lHealth').style.width = d.health + '%';
+  document.getElementById('rMessage').textContent = d.msg;
+  document.getElementById('rLucky').textContent = 'ラッキーアイテム：' + d.lucky;
+  document.getElementById('zodiacGrid').style.display = 'none';
+  const rc = document.getElementById('seizaResult');
+  rc.classList.add('show');
+  rc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetSeiza() {
+  document.getElementById('zodiacGrid').style.display = 'grid';
+  document.getElementById('seizaResult').classList.remove('show');
+}
+
+// ===== タロット =====
+const tarotCards = [
+  { emoji:'☀️', name:'太陽', pos:'正位置', meaning:'成功・喜び・活力' },
+  { emoji:'🌙', name:'月', pos:'正位置', meaning:'直感・神秘・夢' },
+  { emoji:'⭐', name:'星', pos:'正位置', meaning:'希望・インスピレーション' },
+  { emoji:'🌍', name:'世界', pos:'正位置', meaning:'完成・達成・旅立ち' },
+  { emoji:'❤️', name:'恋人', pos:'正位置', meaning:'愛・選択・調和' },
+  { emoji:'⚡', name:'塔', pos:'逆位置', meaning:'変化・解放・気づき' },
+  { emoji:'⚖️', name:'正義', pos:'正位置', meaning:'公平・バランス・真実' },
+  { emoji:'🌟', name:'魔術師', pos:'正位置', meaning:'意志・創造・実現力' },
+  { emoji:'🎠', name:'運命の輪', pos:'正位置', meaning:'変化・チャンス・めぐり' },
+  { emoji:'🦁', name:'力', pos:'正位置', meaning:'勇気・忍耐・内なる強さ' },
+];
+
+const tarotMessages = [
+  (q) => `「${q}」に対して、カードは前向きな変化を示しています。今の状況は一見難しく見えても、着実に進んでいます。自分を信じて一歩踏み出す勇気が鍵になりそう✨`,
+  (q) => `「${q}」——カードのメッセージは「焦らなくていい」こと。タイミングは必ずやってきます。今は準備期間。心のゆとりを大切にして🌙`,
+  (q) => `「${q}」について、カードは新しい可能性が開かれると伝えています。今まで見えなかった道が現れる予感。直感を信じてGO！⭐`,
+];
+
+let tarotDrawn = false;
+
+function drawTarot() {
+  if (tarotDrawn) return;
+  tarotDrawn = true;
+  const q = document.getElementById('tarotQ').value || '今の状況';
+  
+  const shuffled = [...tarotCards].sort(() => Math.random() - 0.5).slice(0, 3);
+  const positions = ['過去', '現在', '未来'];
+  
+  const rowEl = document.getElementById('tarotCardsRow');
+  rowEl.innerHTML = '';
+  shuffled.forEach((card, i) => {
+    const el = document.createElement('div');
+    el.className = 'tarot-revealed';
+    el.innerHTML = `<span class="card-pos">${positions[i]}</span><span class="card-emoji">${card.emoji}</span><span class="card-name">${card.name}</span><small>${card.meaning}</small>`;
+    rowEl.appendChild(el);
+  });
+
+  document.getElementById('tarotQShow').textContent = q;
+  const msgFn = tarotMessages[Math.floor(Math.random() * tarotMessages.length)];
+  document.getElementById('tarotMessage').textContent = msgFn(q);
+
+  document.getElementById('tarotInput').style.display = 'none';
+  const tr = document.getElementById('tarotResult');
+  tr.classList.add('show');
+  tr.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetTarot() {
+  tarotDrawn = false;
+  document.getElementById('tarotInput').style.display = 'block';
+  document.getElementById('tarotQ').value = '';
+  document.getElementById('tarotResult').classList.remove('show');
+}
+
+// ===== 数秘術 =====
+const numerologyData = {
+  1: { msg:'あなたはリーダー気質の開拓者。独立心が強く、新しいことを始める力があります。自分の道を信じて突き進んで✨', lucky:'🔴 赤・情熱の色' },
+  2: { msg:'調和と協調のエネルギーを持つあなた。人と人をつなぐ橋渡し役として活躍します。繊細な感性は最大の才能です🌸', lucky:'🌸 ピンク・やさしさの色' },
+  3: { msg:'創造性と表現力にあふれた魅力的な人。言葉や芸術で人を喜ばせる天才。明るい笑顔が周りを幸せにします✨', lucky:'💛 黄色・太陽の色' },
+  4: { msg:'堅実さと誠実さが魅力のあなた。コツコツと積み上げることで夢を実現します。信頼される存在です🌿', lucky:'🟤 ブラウン・大地の色' },
+  5: { msg:'自由と変化を愛する冒険家。好奇心旺盛で多彩な才能を持ちます。変化を恐れずに楽しんで🌊', lucky:'💙 ブルー・自由の色' },
+  6: { msg:'愛情深くケアの精神にあふれた人。家族や友人を大切にする温かい心が周りを引き付けます💕', lucky:'🌹 ローズ・愛の色' },
+  7: { msg:'深い洞察力と直感を持つ哲学者タイプ。見えないものを見る力があります。一人の時間を大切にして🔮', lucky:'💜 パープル・神秘の色' },
+  8: { msg:'力強いエネルギーで大きな成功を引き寄せます。物質的な豊かさと精神的な充実を両立できる人です💪', lucky:'⚫ ゴールド・成功の色' },
+  9: { msg:'思いやりと大きな愛で世界に貢献する人。奉仕の精神が運気を高めます。人生の知恵者です🌍', lucky:'🌈 虹色・すべての色' },
+  11: { msg:'マスターナンバー11✨ 高い霊的エネルギーと直感を持つ特別な存在。インスピレーションで人々を導きます。', lucky:'⭐ シルバー・月の色' },
+  22: { msg:'マスターナンバー22✨ 壮大な夢を現実にする力を持つ「マスタービルダー」。世界を変える可能性を秘めています。', lucky:'🌟 ゴールド・宇宙の色' },
+  33: { msg:'マスターナンバー33✨ 愛と献身の象徴。人々を癒し、導く使命を持ちます。あなたの存在そのものが光です。', lucky:'💖 ローズゴールド' },
+};
+
+function calcNumerology() {
+  const bd = document.getElementById('birthdate').value;
+  if (!bd) { alert('生年月日を入力してね🌸'); return; }
+  
+  const digits = bd.replace(/-/g, '').split('').map(Number);
+  let sum = digits.reduce((a, b) => a + b, 0);
+  
+  while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+    sum = sum.toString().split('').map(Number).reduce((a, b) => a + b, 0);
+  }
+
+  const d = numerologyData[sum] || numerologyData[9];
+  document.getElementById('lifeNum').textContent = sum;
+  document.getElementById('suuhiMessage').textContent = d.msg;
+  document.getElementById('suuhiLucky').textContent = 'ラッキーカラー：' + d.lucky;
+
+  const res = document.getElementById('suuhiResult');
+  res.classList.add('show');
+  res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetSuuhi() {
+  document.getElementById('suuhiResult').classList.remove('show');
+  document.getElementById('birthdate').value = '';
+}
+
+// ===== タブ切り替え =====
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector('.tab-btn.' + id).classList.add('active');
+}
+</script>
+</body>
+</html>

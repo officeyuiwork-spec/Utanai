@@ -1,1 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌙 夜ママうらない</title>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Hina+Mincho&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FFF8F2;
+  --blush: #FDDBD0;
+  --rose: #F2A58E;
+  --mauve: #C9889E;
+  --lavender: #D8C8F0;
+  --mint: #C0EAD8;
+  --sky: #C0DCEE;
+  --moon: #F5EFD0;
+  --text: #4a3540;
+  --text-soft: #9a7a85;
+  --white: #FFFFFF;
+}
 
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Klee One', cursive;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* bg */
+.bg-wrap {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.bubble {
+  position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.4;
+  animation: drift 10s ease-in-out infinite;
+}
+.b1 { width:350px;height:350px;background:var(--blush);top:-80px;left:-80px;animation-delay:0s; }
+.b2 { width:280px;height:280px;background:var(--lavender);top:40%;right:-60px;animation-delay:3s; }
+.b3 { width:220px;height:220px;background:var(--mint);bottom:15%;left:10%;animation-delay:5s; }
+.b4 { width:200px;height:200px;background:var(--moon);bottom:-50px;right:25%;animation-delay:1.5s; }
+
+@keyframes drift {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(15px,-20px) scale(1.06); }
+}
+
+/* layout */
+.wrap { position:relative; z-index:10; max-width:480px; margin:0 auto; padding:0 18px 80px; }
+
+/* header */
+header { text-align:center; padding: 48px 0 24px; }
+.moon-deco { font-size:2.2rem; display:block; animation: moonSway 4s ease-in-out infinite; }
+@keyframes moonSway { 0%,100%{transform:rotate(-8deg)} 50%{transform:rotate(8deg)} }
+
+.site-title {
+  font-family: 'Hina Mincho', serif;
+  font-size: clamp(1.8rem, 5.5vw, 2.6rem);
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  background: linear-gradient(135deg, var(--mauve), #e8a0b0, #a07cc0);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 8px 0 6px;
+}
+.site-sub {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  letter-spacing: 0.15em;
+  line-height: 1.8;
+}
+
+/* tabs */
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 28px 0;
+}
+.tab-btn {
+  padding: 12px 8px;
+  border: none; border-radius: 18px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 0.82rem; font-weight: 700;
+  cursor: pointer; transition: all 0.3s;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  line-height: 1.4;
+}
+.tab-btn.育児 { background: var(--blush); color: #8b4555; }
+.tab-btn.疲れ { background: var(--lavender); color: #5a4a8a; }
+.tab-btn.おみくじ { background: var(--moon); color: #7a6a20; }
+.tab-btn.夜ママ { background: linear-gradient(135deg, #3a2a4a, #5a3a6a); color: #e8d0f0; }
+.tab-btn:hover, .tab-btn.active {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+}
+.tab-btn.夜ママ.active { box-shadow: 0 8px 24px rgba(80,40,100,0.35); }
+
+/* sections */
+.section { display:none; }
+.section.active { display:block; animation: fadeUp 0.4s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* card base */
+.card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Hina Mincho', serif;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-bottom: 22px;
+  color: var(--text);
+}
+
+/* 育児運 */
+.ikuji-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 20px;
+}
+.ikuji-item {
+  background: var(--cream);
+  border-radius: 16px;
+  padding: 16px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+.ikuji-item:hover { border-color: var(--blush); transform: translateY(-3px); }
+.ikuji-item .i-emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+.ikuji-item .i-name { font-size: 0.82rem; font-weight: 700; }
+.ikuji-item .i-sub { font-size: 0.7rem; color: var(--text-soft); margin-top: 2px; }
+
+.ikuji-result { display:none; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.ikuji-result.show { display:block; }
+@keyframes popIn { from{transform:scale(0.85);opacity:0} to{transform:scale(1);opacity:1} }
+
+.result-big-emoji { font-size: 3.5rem; text-align:center; display:block; margin-bottom: 8px; }
+.result-heading {
+  font-family: 'Hina Mincho', serif;
+  font-size: 1.2rem; text-align:center; margin-bottom: 16px;
+}
+.fortune-stars { text-align:center; font-size:1.4rem; margin-bottom:16px; letter-spacing:4px; }
+
+.msg-box {
+  background: linear-gradient(135deg, #fff5f8, #f8f0ff);
+  border-radius: 16px; padding: 16px 18px;
+  font-size: 0.88rem; line-height: 1.9; color: var(--text);
+}
+.advice-tag {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.78rem; font-weight: 700;
+}
+.tag-pink { background: var(--blush); color: #8b4555; }
+.tag-lav { background: var(--lavender); color: #5a4a8a; }
+.tag-mint { background: var(--mint); color: #2a6a50; }
+
+.reset-btn {
+  display: block; margin: 18px auto 0;
+  padding: 10px 24px;
+  border: 2px solid #e8d8e0;
+  border-radius: 50px;
+  background: white;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size: 0.82rem; color: var(--text-soft);
+  cursor: pointer; transition: all 0.3s;
+}
+.reset-btn:hover { border-color: var(--rose); color: var(--rose); }
+
+/* 疲れチェック */
+.tsukare-q { font-size: 0.9rem; font-weight:700; margin-bottom:12px; color: var(--text); }
+.tsukare-options { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.tsukare-opt {
+  padding: 8px 16px;
+  background: var(--cream);
+  border: 2px solid #e8d8e8;
+  border-radius: 50px;
+  font-size: 0.8rem; cursor: pointer;
+  transition: all 0.2s; font-family: 'Zen Maru Gothic', sans-serif;
+}
+.tsukare-opt.selected { background: var(--lavender); border-color: var(--mauve); color: #4a3a7a; font-weight:700; }
+
+.btn-uranai {
+  width:100%; padding:14px;
+  border:none; border-radius:18px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-size:0.95rem; font-weight:700;
+  cursor:pointer; transition: all 0.3s;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  letter-spacing: 0.08em;
+}
+.btn-lav { background: linear-gradient(135deg, var(--lavender), #b8a0e0); color: #4a3a7a; }
+.btn-rose { background: linear-gradient(135deg, var(--blush), var(--rose)); color: white; }
+.btn-moon { background: linear-gradient(135deg, var(--moon), #e8d890); color: #5a4a10; }
+.btn-night { background: linear-gradient(135deg, #3a2a4a, #6a3a8a); color: #e8d0f0; }
+.btn-uranai:hover { transform:translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.16); }
+
+.tsukare-result { display:none; margin-top:20px; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.tsukare-result.show { display:block; }
+
+.tsukare-level {
+  text-align:center; margin-bottom:16px;
+}
+.level-label { font-size:0.8rem; color:var(--text-soft); margin-bottom:6px; }
+.level-bar-wrap { height:14px; background:#f0e8f0; border-radius:10px; overflow:hidden; margin-bottom:4px; }
+.level-bar { height:100%; border-radius:10px; animation: fillBar 1.2s ease-out forwards; }
+@keyframes fillBar { from{width:0} }
+.level-num { font-family:'Shippori Mincho',serif; font-size:2rem; color: var(--mauve); }
+
+/* おみくじ */
+.omikuji-box {
+  text-align:center; padding: 10px 0;
+}
+.omikuji-scroll {
+  width: 110px; height: 160px;
+  background: linear-gradient(180deg, #f5e8d0, #e8d0b0);
+  border-radius: 55px 55px 8px 8px;
+  margin: 0 auto 20px;
+  display:flex; align-items:center; justify-content:center;
+  font-size: 2.5rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12), inset 0 2px 8px rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+.omikuji-scroll::before {
+  content: '';
+  position:absolute; top:8px; left:50%; transform:translateX(-50%);
+  width:2px; height:80%; background:rgba(180,140,80,0.3); border-radius:1px;
+}
+.omikuji-scroll:hover { transform: rotate(-5deg) scale(1.05); box-shadow: 0 12px 30px rgba(0,0,0,0.18); }
+.omikuji-hint { font-size:0.8rem; color:var(--text-soft); margin-bottom:16px; }
+
+.omikuji-result { display:none; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.omikuji-result.show { display:block; text-align:center; }
+.kuji-rank {
+  font-family:'Shippori Mincho',serif;
+  font-size:2.2rem;
+  color: var(--mauve);
+  margin: 10px 0 6px;
+}
+.kuji-word {
+  font-size:1rem; font-weight:700; color:var(--text);
+  margin-bottom: 16px;
+}
+
+/* 夜ママ */
+.yoru-header {
+  background: linear-gradient(135deg, #3a2a4a, #5a3a7a);
+  border-radius: 24px; padding: 28px 24px;
+  text-align:center; margin-bottom:16px;
+  color: #e8d0f0;
+}
+.yoru-moon { font-size:3rem; display:block; animation: moonGlow 3s ease-in-out infinite; }
+@keyframes moonGlow { 0%,100%{filter:drop-shadow(0 0 8px #c0a0e0)} 50%{filter:drop-shadow(0 0 20px #e0c0ff)} }
+.yoru-title { font-family:'Hina Mincho',serif; font-size:1.3rem; margin:8px 0 4px; }
+.yoru-sub { font-size:0.78rem; opacity:0.7; }
+
+.yoru-time-label { font-size:0.85rem; color:var(--text-soft); margin-bottom:10px; }
+.time-options { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+.time-opt {
+  padding: 8px 14px;
+  background: #f0e8f8; border: 2px solid #d8c8e8;
+  border-radius: 50px; font-size:0.8rem;
+  cursor:pointer; transition:all 0.2s;
+  font-family:'Zen Maru Gothic',sans-serif;
+}
+.time-opt.selected { background:#5a3a7a; border-color:#5a3a7a; color:white; font-weight:700; }
+
+.yoru-result { display:none; margin-top:20px; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.yoru-result.show { display:block; }
+.yoru-card {
+  background: linear-gradient(135deg, #2a1a3a, #4a2a6a);
+  border-radius:20px; padding:24px 20px; color:#e8d0f0;
+  text-align:center;
+}
+.yoru-stars { font-size:1.2rem; letter-spacing:6px; margin-bottom:12px; animation: twinkle 2s ease-in-out infinite; }
+@keyframes twinkle { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.yoru-msg { font-size:0.9rem; line-height:1.9; }
+.yoru-lucky {
+  display:inline-block; margin-top:14px;
+  padding:6px 18px; background:rgba(255,255,255,0.1);
+  border-radius:50px; font-size:0.78rem; font-weight:700;
+}
+
+/* sparkles */
+.sparkles { text-align:center; font-size:1.3rem; letter-spacing:6px; margin-bottom:10px; animation: sparkle 2s ease-in-out infinite; }
+@keyframes sparkle { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.15)} }
+
+/* footer */
+footer { text-align:center; padding:24px 0; font-size:0.72rem; color:var(--text-soft); position:relative;z-index:10; }
+</style>
+</head>
+<body>
+
+<div class="bg-wrap">
+  <div class="bubble b1"></div>
+  <div class="bubble b2"></div>
+  <div class="bubble b3"></div>
+  <div class="bubble b4"></div>
+</div>
+
+<div class="wrap">
+  <header>
+    <span class="moon-deco">🌙</span>
+    <div class="site-title">夜ママうらない</div>
+    <p class="site-sub">毎日がんばる夜ママへ、星からのメッセージ✨<br>あなたはよくやってるよ</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn 育児 active" onclick="showSection('ikuji')">🍼 今日の育児運</button>
+    <button class="tab-btn 疲れ" onclick="showSection('tsukare')">💆 疲れ度チェック</button>
+    <button class="tab-btn おみくじ" onclick="showSection('omikuji')">📜 ママおみくじ</button>
+    <button class="tab-btn 夜ママ" onclick="showSection('yoru')">🌙 夜ママ運勢</button>
+  </div>
+
+  <!-- 育児運 -->
+  <section id="ikuji" class="section active">
+    <div class="card">
+      <h2 class="section-title">🍼 今日の育児運を占う</h2>
+      <div class="ikuji-grid" id="ikujiGrid">
+        <div class="ikuji-item" onclick="showIkuji('gururi')">
+          <span class="i-emoji">😭</span>
+          <span class="i-name">ぐずり予報</span>
+          <span class="i-sub">今日は泣く？</span>
+        </div>
+        <div class="ikuji-item" onclick="showIkuji('nenne')">
+          <span class="i-emoji">💤</span>
+          <span class="i-name">お昼寝運</span>
+          <span class="i-sub">寝てくれる？</span>
+        </div>
+        <div class="ikuji-item" onclick="showIkuji('gohan')">
+          <span class="i-emoji">🥣</span>
+          <span class="i-name">ごはん運</span>
+          <span class="i-sub">食べてくれる？</span>
+        </div>
+        <div class="ikuji-item" onclick="showIkuji('mama')">
+          <span class="i-emoji">💕</span>
+          <span class="i-name">ママ運全体</span>
+          <span class="i-sub">今日のトータル</span>
+        </div>
+      </div>
+      <div class="ikuji-result" id="ikujiResult">
+        <div class="sparkles" id="ikujiSparkle"></div>
+        <span class="result-big-emoji" id="ikujiEmoji"></span>
+        <div class="result-heading" id="ikujiHeading"></div>
+        <div class="fortune-stars" id="ikujiStars"></div>
+        <div class="msg-box" id="ikujiMsg"></div>
+        <div style="text-align:center">
+          <span class="advice-tag tag-pink" id="ikujiTag"></span>
+        </div>
+        <button class="reset-btn" onclick="resetIkuji()">← 別の運勢を見る</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 疲れチェック -->
+  <section id="tsukare" class="section">
+    <div class="card">
+      <h2 class="section-title">💆 ママの疲れ度チェック</h2>
+
+      <div class="tsukare-q">😴 昨夜の睡眠は？</div>
+      <div class="tsukare-options" id="sleep-opts">
+        <div class="tsukare-opt" data-group="sleep" data-val="3" onclick="selectOpt(this)">3時間未満</div>
+        <div class="tsukare-opt" data-group="sleep" data-val="5" onclick="selectOpt(this)">3〜5時間</div>
+        <div class="tsukare-opt" data-group="sleep" data-val="7" onclick="selectOpt(this)">5〜7時間</div>
+        <div class="tsukare-opt" data-group="sleep" data-val="9" onclick="selectOpt(this)">7時間以上</div>
+      </div>
+
+      <div class="tsukare-q">🍽️ 今日ちゃんとごはん食べた？</div>
+      <div class="tsukare-options">
+        <div class="tsukare-opt" data-group="meshi" data-val="1" onclick="selectOpt(this)">食べてない</div>
+        <div class="tsukare-opt" data-group="meshi" data-val="2" onclick="selectOpt(this)">子どものこし食べ</div>
+        <div class="tsukare-opt" data-group="meshi" data-val="3" onclick="selectOpt(this)">なんとか食べた</div>
+      </div>
+
+      <div class="tsukare-q">💬 今日大人と話した？</div>
+      <div class="tsukare-options">
+        <div class="tsukare-opt" data-group="hanashi" data-val="1" onclick="selectOpt(this)">ほぼゼロ</div>
+        <div class="tsukare-opt" data-group="hanashi" data-val="2" onclick="selectOpt(this)">ちょっとだけ</div>
+        <div class="tsukare-opt" data-group="hanashi" data-val="3" onclick="selectOpt(this)">わりと話せた</div>
+      </div>
+
+      <button class="btn-uranai btn-lav" onclick="calcTsukare()" style="margin-top:8px">✨ 疲れ度を診断する</button>
+
+      <div class="tsukare-result" id="tsukareResult">
+        <div class="tsukare-level">
+          <div class="level-label">今日の疲れ度</div>
+          <div class="level-bar-wrap">
+            <div class="level-bar" id="tsukareBar" style="width:0%"></div>
+          </div>
+          <div class="level-num" id="tsukareNum"></div>
+        </div>
+        <div class="msg-box" id="tsukareMsg"></div>
+        <div style="text-align:center;margin-top:12px">
+          <span class="advice-tag tag-lav" id="tsukareTag"></span>
+        </div>
+        <button class="reset-btn" onclick="resetTsukare()">← もう一度チェック</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- おみくじ -->
+  <section id="omikuji" class="section">
+    <div class="card">
+      <h2 class="section-title">📜 ママおみくじ</h2>
+      <div class="omikuji-box" id="omikujiBox">
+        <p class="omikuji-hint">おみくじをタップして引いてね🌸</p>
+        <div class="omikuji-scroll" onclick="drawOmikuji()">🎋</div>
+      </div>
+      <div class="omikuji-result" id="omikujiResult">
+        <div class="sparkles">🌸 🌸 🌸</div>
+        <div class="kuji-rank" id="kujiRank"></div>
+        <div class="kuji-word" id="kujiWord"></div>
+        <div class="msg-box" id="kujiMsg"></div>
+        <div style="text-align:center;margin-top:12px">
+          <span class="advice-tag tag-mint" id="kujiTag"></span>
+        </div>
+        <button class="reset-btn" onclick="resetOmikuji()">← もう一度引く</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 夜ママ -->
+  <section id="yoru" class="section">
+    <div class="yoru-header">
+      <span class="yoru-moon">🌙</span>
+      <div class="yoru-title">夜ママタイム占い</div>
+      <div class="yoru-sub">子どもが寝たあとの、夜ママだけの時間</div>
+    </div>
+    <div class="card">
+      <div class="yoru-time-label">今夜の子どもの寝かしつけは？</div>
+      <div class="time-options">
+        <div class="time-opt" data-val="easy" onclick="selectTime(this)">すんなり寝た</div>
+        <div class="time-opt" data-val="normal" onclick="selectTime(this)">まあまあ</div>
+        <div class="time-opt" data-val="hard" onclick="selectTime(this)">苦労した…</div>
+        <div class="time-opt" data-val="notyet" onclick="selectTime(this)">まだ寝てない</div>
+      </div>
+      <button class="btn-uranai btn-night" onclick="calcYoru()">🌙 夜ママ運勢を見る</button>
+      <div class="yoru-result" id="yoruResult">
+        <div class="yoru-card">
+          <div class="yoru-stars" id="yoruStars"></div>
+          <div class="yoru-msg" id="yoruMsg"></div>
+          <div class="yoru-lucky" id="yoruLucky"></div>
+        </div>
+        <button class="reset-btn" onclick="resetYoru()">← もう一度占う</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div style="position:relative;z-index:10;max-width:480px;margin:0 auto;padding:0 18px 32px;">
+  <a href="https://line.me/R/ti/p/@nkx0601t" target="_blank" style="
+    display:block;
+    background: linear-gradient(135deg, #06C755, #00a040);
+    border-radius: 24px;
+    padding: 22px 24px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 8px 28px rgba(6,199,85,0.35);
+    transition: all 0.3s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+    <div style="font-size:1.6rem;margin-bottom:6px;">🐰💚</div>
+    <div style="font-family:'Hina Mincho',serif;font-size:1.1rem;color:white;font-weight:600;margin-bottom:4px;">もっと詳しく占いたい夜ママへ</div>
+    <div style="font-size:0.82rem;color:rgba(255,255,255,0.9);margin-bottom:14px;">LINE登録で特別なメッセージをお届け🌙</div>
+    <div style="
+      display:inline-block;
+      background:white;
+      color:#06C755;
+      font-family:'Klee One',cursive;
+      font-weight:700;
+      font-size:0.95rem;
+      padding:10px 28px;
+      border-radius:50px;
+      letter-spacing:0.05em;
+    ">＼ LINE登録はこちら ／</div>
+  </a>
+</div>
+<footer>🌙 夜ママうらない ✦ ひとりじゃないよ、毎日おつかれさま 🌙</footer>
+
+<script>
+// ===== タブ =====
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector('.tab-btn.' + (id === 'ikuji' ? '育児' : id === 'tsukare' ? '疲れ' : id === 'omikuji' ? 'おみくじ' : '夜ママ')).classList.add('active');
+}
+
+// ===== 育児運 =====
+const ikujiData = {
+  gururi: [
+    { emoji:'😊', heading:'ぐずり予報：おだやか', stars:'⭐⭐⭐⭐⭐', msg:'今日は比較的穏やかな日になりそう！もしぐずっても、短時間で落ち着いてくれる気配が。ママの穏やかな声が一番の魔法だよ🌸', tag:'💕 抱っこしながら深呼吸' },
+    { emoji:'😅', heading:'ぐずり予報：やや波あり', stars:'⭐⭐⭐', msg:'午前中か夕方、ちょっと荒れそうな予感…。でも大丈夫！ぐずりはちゃんと気持ちを伝えようとしてるサイン。受け止めてあげるだけで十分だよ。', tag:'🎵 好きな歌を一緒に歌う' },
+    { emoji:'😭', heading:'ぐずり予報：嵐の予感', stars:'⭐⭐', msg:'今日は泣き声多めかも…。でもこれ、ちゃんと成長してる証拠！ぐずりのピークは必ず過ぎるから、ママも一緒に深呼吸して。無理しなくていいよ。', tag:'🍵 子どもが落ち着いたらお茶休憩' },
+  ],
+  nenne: [
+    { emoji:'💤', heading:'お昼寝運：ぐっすり◎', stars:'⭐⭐⭐⭐⭐', msg:'今日はお昼寝がうまくいく予感！その間にちょっとだけ自分時間が取れそう。横になるだけでもOK、ちゃんと休んでね🌙', tag:'💆 一緒にゴロンして充電' },
+    { emoji:'😪', heading:'お昼寝運：ちょっと短め', stars:'⭐⭐⭐', msg:'寝てくれるけど短めかも。抱っこでうとうと…という展開もあるかな。腕が疲れたら授乳クッションをフル活用して！', tag:'🎶 ホワイトノイズで助けてもらう' },
+    { emoji:'🙈', heading:'お昼寝運：今日は手強い', stars:'⭐⭐', msg:'今日はなかなか寝てくれない日かも…。そんな日は無理に寝かそうとしなくてOK！一緒にゴロゴロする時間も立派な休憩だよ。', tag:'🌿 外の空気を吸うとリセットできるかも' },
+  ],
+  gohan: [
+    { emoji:'🥣', heading:'ごはん運：完食の予感！', stars:'⭐⭐⭐⭐⭐', msg:'今日は食べてくれそう！作ったもの食べてもらえるって本当に嬉しいよね。ママのごはんが一番の栄養だよ🌸', tag:'✨ 今日のごはん、えらい！' },
+    { emoji:'😶', heading:'ごはん運：まあまあかな', stars:'⭐⭐⭐', msg:'全部は食べないかもしれないけど、気にしないで！今日食べなかったものが明日食べられるようになったりするから。長い目で見てね。', tag:'🍌 バナナは最強の保険' },
+    { emoji:'🙅', heading:'ごはん運：今日は難しい日', stars:'⭐⭐', msg:'今日は食べムラが出そう…。でも食べさせることより、一緒に食卓につくことの方が大事！食べなくても座ってくれたらOK！', tag:'💛 ママが笑顔なら大丈夫' },
+  ],
+  mama: [
+    { emoji:'🌸', heading:'今日のママ運：最高！', stars:'⭐⭐⭐⭐⭐', msg:'今日のあなたは運気絶好調！子どもとの時間がかけがえなく感じられそう。小さな幸せに気づける日。その笑顔が家族みんなの太陽だよ🌞', tag:'💕 今日の自分を褒めてあげて' },
+    { emoji:'🌤️', heading:'今日のママ運：まずまず◎', stars:'⭐⭐⭐⭐', msg:'安定感のある一日になりそう。特別なことはなくても、ちゃんとこなせてる自分はすごい！日常を守ることって、本当に大事な仕事だよ。', tag:'🍵 おやつの時間を大切に' },
+    { emoji:'🌧️', heading:'今日のママ運：充電日', stars:'⭐⭐⭐', msg:'今日はちょっとペースを落としてOKな日。完璧にやらなくていい！ご飯がレトルトでも、部屋が散らかってても、ちゃんと生きてたらそれで100点。', tag:'🌙 今夜は早めに寝て' },
+  ],
+};
+
+function showIkuji(type) {
+  const pool = ikujiData[type];
+  const d = pool[Math.floor(Math.random() * pool.length)];
+  const sparkles = { gururi:'😭 😊 😭', nenne:'💤 ✨ 💤', gohan:'🥣 🌸 🥣', mama:'💕 🌟 💕' };
+  document.getElementById('ikujiSparkle').textContent = sparkles[type];
+  document.getElementById('ikujiEmoji').textContent = d.emoji;
+  document.getElementById('ikujiHeading').textContent = d.heading;
+  document.getElementById('ikujiStars').textContent = d.stars;
+  document.getElementById('ikujiMsg').textContent = d.msg;
+  document.getElementById('ikujiTag').textContent = d.tag;
+  document.getElementById('ikujiGrid').style.display = 'none';
+  const r = document.getElementById('ikujiResult');
+  r.classList.add('show');
+  r.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+function resetIkuji() {
+  document.getElementById('ikujiGrid').style.display = 'grid';
+  document.getElementById('ikujiResult').classList.remove('show');
+}
+
+// ===== 疲れチェック =====
+const selectedOpts = {};
+function selectOpt(el) {
+  const group = el.dataset.group;
+  document.querySelectorAll(`[data-group="${group}"]`).forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedOpts[group] = parseInt(el.dataset.val);
+}
+
+function calcTsukare() {
+  const sleep = selectedOpts.sleep || 5;
+  const meshi = selectedOpts.meshi || 2;
+  const hanashi = selectedOpts.hanashi || 2;
+
+  // 疲れ度（逆算：数値低いほど疲れてる）
+  const rawScore = sleep + meshi * 10 + hanashi * 10;
+  const maxScore = 9 + 30 + 30;
+  const minScore = 3 + 10 + 10;
+  const pct = Math.round(100 - ((rawScore - minScore) / (maxScore - minScore)) * 100);
+  const level = pct;
+
+  let color, msg, tag;
+  if (level >= 80) {
+    color = '#e57373';
+    msg = '今日はかなり消耗してる😢 それでもここまでやってきたあなたは本当にすごい。今夜は子どもが寝たら、何も考えずに横になって。ゆっくり休むことが明日への一番の準備だよ。';
+    tag = '🛁 今夜は湯船に5分だけでも浸かって';
+  } else if (level >= 55) {
+    color = '#f0a060';
+    msg = '結構がんばってる日だね！ちゃんと自分を労われてる部分もあるけど、無理してる部分もありそう。完璧じゃなくていいから、「まあいっか」を口癖にしてみて🌸';
+    tag = '☕ 温かいものを飲む時間を作って';
+  } else {
+    color = '#81b894';
+    msg = '今日は比較的ゆとりがある日だね！でも調子がいい日こそ無理しないで。今夜ちょっとだけ自分の好きなことをする時間を作ってみて✨';
+    tag = '💕 今日の自分に「よくやったね」と言って';
+  }
+
+  document.getElementById('tsukareBar').style.width = level + '%';
+  document.getElementById('tsukareBar').style.background = `linear-gradient(90deg, ${color}80, ${color})`;
+  document.getElementById('tsukareNum').textContent = `疲れ度 ${level}%`;
+  document.getElementById('tsukareMsg').textContent = msg;
+  document.getElementById('tsukareTag').textContent = tag;
+
+  const r = document.getElementById('tsukareResult');
+  r.classList.add('show');
+  r.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function resetTsukare() {
+  document.querySelectorAll('.tsukare-opt').forEach(e => e.classList.remove('selected'));
+  Object.keys(selectedOpts).forEach(k => delete selectedOpts[k]);
+  document.getElementById('tsukareResult').classList.remove('show');
+}
+
+// ===== おみくじ =====
+const omikujiData = [
+  { rank:'大吉 🌸', word:'今日のあなたは太陽みたいな存在', msg:'育児の大変さをちゃんとわかってるから、こんなに頑張れてる。今日は何かひとつ、自分が「嬉しい」と感じることをしてみて。それがあなたへのご褒美。', tag:'🌸 今日のラッキーアイテム：温かいドリンク' },
+  { rank:'中吉 ✨', word:'小さな積み重ねが宝物になる日', msg:'今日うまくいかないことがあっても、それもぜんぶ経験値。子どもの笑顔をひとつ見られたら、もう十分な一日だよ。焦らなくて大丈夫！', tag:'💛 今日のラッキーアイテム：黄色いもの' },
+  { rank:'吉 🌼', word:'流れに乗るのが今日のコツ', msg:'計画通りにいかない日も、そのまま流れに乗ってみて。完璧なお母さんじゃなくていい。ありのままのあなたが、一番の安心感を子どもに与えてるよ。', tag:'🌿 今日のラッキーアイテム：グリーン系' },
+  { rank:'小吉 🍀', word:'ゆっくりが今日のおまもり', msg:'今日は急がなくていい日。のんびりペースで過ごすことが、実は一番うまくいく秘訣かも。子どもと一緒にだらーっとする時間も、立派な育児だよ！', tag:'🍵 今日のラッキーアイテム：お気に入りのカップ' },
+  { rank:'末吉 🌙', word:'今夜はゆっくり休んでね', msg:'今日はちょっと疲れが出やすい日かも。でも「末吉」って実は伸びしろがある証拠！今夜子どもが寝たら、好きなものを食べて、早めに休んで。明日はきっとよくなるよ。', tag:'🌙 今日のラッキーアイテム：夜空を見上げること' },
+];
+
+let omikujiDrawn = false;
+function drawOmikuji() {
+  if (omikujiDrawn) return;
+  omikujiDrawn = true;
+  const d = omikujiData[Math.floor(Math.random() * omikujiData.length)];
+  document.getElementById('kujiRank').textContent = d.rank;
+  document.getElementById('kujiWord').textContent = d.word;
+  document.getElementById('kujiMsg').textContent = d.msg;
+  document.getElementById('kujiTag').textContent = d.tag;
+  document.getElementById('omikujiBox').style.display = 'none';
+  const r = document.getElementById('omikujiResult');
+  r.classList.add('show');
+  r.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+function resetOmikuji() {
+  omikujiDrawn = false;
+  document.getElementById('omikujiBox').style.display = 'block';
+  document.getElementById('omikujiResult').classList.remove('show');
+}
+
+// ===== 夜ママ =====
+let selectedTime = null;
+function selectTime(el) {
+  document.querySelectorAll('.time-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedTime = el.dataset.val;
+}
+
+const yoruData = {
+  easy: {
+    stars: '⭐ ⭐ ⭐ ⭐ ⭐',
+    msg: 'すんなり寝てくれた！最高の夜だよ✨ 今夜の夜ママタイムは運気MAX。好きなことを思う存分楽しんで。ドラマでも、スイーツでも、ぼーっとするのも全部OK。今夜はあなたの時間だよ🌙',
+    lucky: '🍫 チョコレートで完璧な夜に'
+  },
+  normal: {
+    stars: '⭐ ⭐ ⭐ ⭐',
+    msg: 'まあまあ寝てくれたね、お疲れさま！今夜は「ほどほどに楽しむ」が吉。SNSを見すぎず、好きな音楽をかけながらゆっくり過ごして。心がじんわり回復する夜になるよ🌸',
+    lucky: '🎵 好きな音楽でリラックス'
+  },
+  hard: {
+    stars: '⭐ ⭐ ⭐',
+    msg: '寝かしつけ、本当にお疲れさまでした😢 今夜は無理しないで。疲れてるときは何かをやろうとしなくていい。横になって、スマホを見るだけでも、それが立派な休憩。今夜のあなたはもう十分すぎるくらい頑張ったよ。',
+    lucky: '🛁 お風呂でじんわり温まって'
+  },
+  notyet: {
+    stars: '🌙 🌙 🌙',
+    msg: 'まだ寝かしつけ中かな、もうすぐだよ！寝た後のひとり時間、絶対来るからね。今夜は「寝た瞬間」を存分に楽しんで。アイスを食べながらドラマを見る…最高じゃない？頑張れ、もう少し🌙',
+    lucky: '🌟 寝た瞬間が今夜最大のご褒美'
+  }
+};
+
+function calcYoru() {
+  const key = selectedTime || 'normal';
+  const d = yoruData[key];
+  document.getElementById('yoruStars').textContent = d.stars;
+  document.getElementById('yoruMsg').textContent = d.msg;
+  document.getElementById('yoruLucky').textContent = d.lucky;
+  const r = document.getElementById('yoruResult');
+  r.classList.add('show');
+  r.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+function resetYoru() {
+  selectedTime = null;
+  document.querySelectorAll('.time-opt').forEach(e => e.classList.remove('selected'));
+  document.getElementById('yoruResult').classList.remove('show');
+}
+</script>
+</body>
+</html>

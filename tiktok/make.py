@@ -29,6 +29,7 @@ def ctext(d,cx,y,txt,f,fill,sp=14):
     for line in txt.split('\n'):
         w=d.textlength(line,font=f); d.text((cx-w/2,y),line,font=f,fill=fill); y+=f.size+sp
     return y
+os.makedirs('out',exist_ok=True)
 for i,(chip,head,art,sub) in enumerate(frames,1):
     im=bg(); d=ImageDraw.Draw(im)
     x0,y0,x1,y1=SAFE; pad=36
@@ -45,7 +46,8 @@ for i,(chip,head,art,sub) in enumerate(frames,1):
     d.text((mid-tw/2,cy0+52),t,font=fc,fill='white')
     y=ctext(d,mid,cy0+138,head,font(58),INK,16)
     # illustration
-    a=Image.open(f'src/c_{art}.png').convert('RGB')
+    src=f'src/ai_{art}.png' if os.path.exists(f'src/ai_{art}.png') else f'src/c_{art}.png'
+    a=Image.open(src).convert('RGB')
     boxw,boxh=cx1-cx0-60, 470
     s=min(boxw/a.width,boxh/a.height); a=a.resize((int(a.width*s),int(a.height*s)),Image.LANCZOS)
     m=Image.new('L',a.size,0); e=26

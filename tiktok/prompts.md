@@ -34,3 +34,10 @@ plain cream background, simple, centered, no text. Vertical 9:16.
 7. `The whole rabbit family (papa with glasses, mama, brother, sister with pink bow) sleeping together under a blanket, crescent moon`
 
 ※ テキストは生成AIに描かせず、後から重ねるのがおすすめ（日本語が崩れにくい）。
+
+## Gemini連携（自動生成）
+
+1. 環境変数 `GEMINI_API_KEY` を設定（Google AI Studio で発行）
+2. `cd tiktok && python3 gen_ai.py`（一部だけなら `python3 gen_ai.py laptop muri`）→ `src/ai_*.png` ができる
+3. `python3 make.py` → `src/ai_*.png` があればそれを使い、なければ切り抜き画像で7コマを作成
+- モデル変更: `GEMINI_IMAGE_MODEL=<モデル名>`

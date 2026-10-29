@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 まみこのうらない部屋</title>
+<meta name="description" content="占い師まみこのうらない部屋。夜ママうらない・ほしのうらないなど、やさしい占いをお届けします。">
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Hina+Mincho&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FFF8F2;
+  --blush: #FDDBD0;
+  --rose: #F2A58E;
+  --mauve: #C9889E;
+  --lavender: #D8C8F0;
+  --mint: #C0EAD8;
+  --sky: #C0DCEE;
+  --moon: #F5EFD0;
+  --text: #4a3540;
+  --text-soft: #9a7a85;
+  --white: #FFFFFF;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Klee One', cursive;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.8;
+}
+
+/* bg */
+.bg-wrap { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bubble {
+  position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.4;
+  animation: drift 10s ease-in-out infinite;
+}
+.b1 { width:350px;height:350px;background:var(--blush);top:-80px;left:-80px; }
+.b2 { width:280px;height:280px;background:var(--lavender);top:40%;right:-60px;animation-delay:3s; }
+.b3 { width:220px;height:220px;background:var(--mint);bottom:15%;left:10%;animation-delay:5s; }
+.b4 { width:200px;height:200px;background:var(--moon);bottom:-50px;right:25%;animation-delay:1.5s; }
+@keyframes drift {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(15px,-20px) scale(1.06); }
+}
+
+/* layout */
+.wrap { position:relative; z-index:10; max-width:480px; margin:0 auto; padding:0 18px 48px; }
+
+/* header */
+header { text-align:center; padding: 48px 0 20px; }
+.avatar {
+  width: 112px; height: 112px; margin: 0 auto 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blush), var(--lavender));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.4rem;
+  box-shadow: 0 8px 28px rgba(201,136,158,0.3);
+  border: 4px solid var(--white);
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+.site-title {
+  font-family: 'Hina Mincho', serif;
+  font-size: clamp(1.7rem, 7vw, 2.4rem);
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--mauve), #e8a0b0, #a07cc0);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 4px 0 6px;
+}
+.site-sub { font-size: 0.85rem; color: var(--text-soft); letter-spacing: 0.12em; }
+
+/* card */
+.card {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 26px 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 24px rgba(201,136,158,0.15);
+  border: 1px solid rgba(255,255,255,0.9);
+}
+.section-title {
+  font-family: 'Hina Mincho', serif;
+  font-size: 1.15rem;
+  text-align: center;
+  margin-bottom: 16px;
+  color: var(--mauve);
+  letter-spacing: 0.08em;
+}
+
+/* profile */
+.profile p { font-size: 0.92rem; margin-bottom: 10px; }
+.profile-tags { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top: 14px; }
+.tag {
+  font-size: 0.78rem; padding: 4px 14px; border-radius: 50px;
+  background: var(--blush); color: var(--text);
+}
+.tag:nth-child(2) { background: var(--lavender); }
+.tag:nth-child(3) { background: var(--mint); }
+.tag:nth-child(4) { background: var(--sky); }
+
+/* today's message */
+.today-date { text-align:center; font-size:0.8rem; color:var(--text-soft); margin-bottom: 10px; }
+.msg-box {
+  background: linear-gradient(135deg, #fff5f0, #f8f0ff);
+  border-radius: 18px;
+  padding: 20px 18px;
+  font-size: 0.95rem;
+  text-align: center;
+  min-height: 90px;
+  display: flex; align-items: center; justify-content: center;
+}
+.lucky { text-align:center; margin-top: 14px; font-size: 0.85rem; color: var(--text-soft); }
+.lucky b { color: var(--mauve); font-weight: 600; }
+
+/* menu */
+.menu { display: grid; gap: 14px; }
+.menu-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px; border-radius: 20px;
+  text-decoration: none; color: var(--text);
+  background: var(--white);
+  box-shadow: 0 4px 16px rgba(201,136,158,0.12);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.menu-item:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(201,136,158,0.25); }
+.menu-icon {
+  flex-shrink: 0;
+  width: 56px; height: 56px; border-radius: 16px;
+  display:flex; align-items:center; justify-content:center; font-size: 1.8rem;
+}
+.icon-night { background: linear-gradient(135deg, #3d3260, #7a5c9e); }
+.icon-star { background: linear-gradient(135deg, var(--sky), var(--lavender)); }
+.menu-name { font-family: 'Hina Mincho', serif; font-size: 1.05rem; display:block; }
+.menu-desc { font-size: 0.78rem; color: var(--text-soft); line-height: 1.6; }
+.menu-arrow { margin-left: auto; color: var(--mauve); font-size: 1.2rem; }
+
+/* line */
+.line-btn {
+  display:block;
+  background: linear-gradient(135deg, #06C755, #00a040);
+  border-radius: 24px;
+  padding: 22px 24px;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 8px 28px rgba(6,199,85,0.35);
+  transition: transform 0.3s;
+  color: white;
+}
+.line-btn:hover { transform: translateY(-3px); }
+.line-title { font-family:'Hina Mincho',serif; font-size:1.1rem; font-weight:600; margin-bottom:4px; }
+.line-sub { font-size:0.82rem; opacity:0.9; margin-bottom:14px; }
+.line-cta {
+  display:inline-block; background:white; color:#06C755;
+  font-weight:700; font-size:0.95rem;
+  padding:10px 28px; border-radius:50px; letter-spacing:0.05em;
+}
+
+footer {
+  position: relative; z-index: 10;
+  text-align:center; font-size: 0.75rem; color: var(--text-soft);
+  padding: 0 18px 32px;
+}
+</style>
+</head>
+<body>
+<div class="bg-wrap">
+  <div class="bubble b1"></div>
+  <div class="bubble b2"></div>
+  <div class="bubble b3"></div>
+  <div class="bubble b4"></div>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="avatar">🐰</div>
+    <h1 class="site-title">まみこのうらない部屋</h1>
+    <p class="site-sub">がんばるあなたに、ちいさな星のおまもりを🌙</p>
+  </header>
+
+  <!-- プロフィール -->
+  <section class="card profile">
+    <h2 class="section-title">🌸 まみこってだれ？</h2>
+    <p>こんにちは、まみこです🐰<br>
+    子育てまっただなかの、占い好きママです。</p>
+    <p>寝かしつけのあとの静かな夜に、星やタロットに助けてもらってきました。
+    ここは、同じようにがんばる人がほっとひと息つける場所にしたくて作ったお部屋です。</p>
+    <p>当たる・当たらないより、「明日もまあいっか」と思えるような言葉をお届けします✨</p>
+    <div class="profile-tags">
+      <span class="tag">🔯 星座占い</span>
+      <span class="tag">🃏 タロット</span>
+      <span class="tag">🔢 数秘術</span>
+      <span class="tag">🍼 ママ占い</span>
+    </div>
+  </section>
+
+  <!-- 今日のひとこと -->
+  <section class="card">
+    <h2 class="section-title">💌 まみこから今日のひとこと</h2>
+    <div class="today-date" id="todayDate"></div>
+    <div class="msg-box" id="todayMsg"></div>
+    <div class="lucky" id="todayLucky"></div>
+  </section>
+
+  <!-- メニュー -->
+  <section class="card">
+    <h2 class="section-title">🔮 うらないメニュー</h2>
+    <div class="menu">
+      <a class="menu-item" href="mama-uranai.html">
+        <span class="menu-icon icon-night">🌙</span>
+        <span>
+          <span class="menu-name">夜ママうらない</span>
+          <span class="menu-desc">育児運・疲れ度チェック・ママおみくじ・夜ママ運勢</span>
+        </span>
+        <span class="menu-arrow">›</span>
+      </a>
+      <a class="menu-item" href="uranai-1.html">
+        <span class="menu-icon icon-star">⭐</span>
+        <span>
+          <span class="menu-name">ほしのうらない</span>
+          <span class="menu-desc">星座占い・タロット・数秘術であなたの運勢を</span>
+        </span>
+        <span class="menu-arrow">›</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- LINE -->
+  <a class="line-btn" href="https://line.me/R/ti/p/@nkx0601t" target="_blank" rel="noopener">
+    <div style="font-size:1.6rem;margin-bottom:6px;">🐰💚</div>
+    <div class="line-title">まみこに相談してみる</div>
+    <div class="line-sub">LINE登録で特別なメッセージをお届け🌙</div>
+    <div class="line-cta">＼ LINE登録はこちら ／</div>
+  </a>
+</div>
+
+<footer>🌸 まみこのうらない部屋 ✦ 今日もおつかれさま 🌸</footer>
+
+<script>
+const messages = [
+  'できなかったことより、<br>できたことをひとつ数えてみてね🌸',
+  '今日は「ちゃんとしなきゃ」を<br>ひとつお休みしていい日です☕',
+  'あなたの笑顔は、<br>まわりのみんなのおひさまだよ☀️',
+  '深呼吸を3回。<br>それだけで運気はちゃんと上向きます🍃',
+  '疲れたら甘いものOK。<br>まみこが許可します🍰',
+  '小さなラッキーに気づける日。<br>空を見上げてみてね🌈',
+  'がんばりすぎたあなたへ。<br>今夜は早めにおふとんへ🌙',
+  '誰かに「ありがとう」を伝えると、<br>3倍になって返ってくる日💌',
+  '迷ったら、わくわくする方へ。<br>直感が冴えています✨',
+  'ひとりじゃないよ。<br>同じ夜空の下でみんながんばってる⭐'
+];
+const colors = ['さくらピンク','ラベンダー','ミントグリーン','クリーム','そらいろ','ローズ','ムーンイエロー'];
+const items = ['あったかい飲みもの','ハンドクリーム','好きな音楽','手帳','お気に入りのマグ','ちいさなおやつ','ふわふわタオル'];
+
+const d = new Date();
+const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+const pick = (arr, salt) => arr[(seed * 31 + salt * 17) % arr.length];
+
+document.getElementById('todayDate').textContent =
+  `${d.getMonth() + 1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）`;
+document.getElementById('todayMsg').innerHTML = pick(messages, 1);
+document.getElementById('todayLucky').innerHTML =
+  `ラッキーカラー：<b>${pick(colors, 2)}</b><br>ラッキーアイテム：<b>${pick(items, 3)}</b>`;
+</script>
+</body>
+</html>
